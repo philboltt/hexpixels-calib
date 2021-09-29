@@ -16,7 +16,7 @@ class Point(object):
     def __repr__(self):
         return "({0},{1})".format(self.x, self.y)
 
-source = "hexpixels_slow.mp4"
+source = "hexpixels_slow_oriented.mp4"
 cap = cv.VideoCapture(source)
 
 radius = 3
@@ -65,10 +65,10 @@ for point in points:
 
 filtered_points = []
 for i, pts in enumerate(similar_points):
-    if len(pts) > 6:
+    if len(pts) > 9:
         filtered_points.append(pts)
 
-template_image = cv.imread("HexPixels_template2.tif", 1)
+template_image = cv.imread("HexPixels_template3.tif", 1)
 
 font                   = cv.FONT_HERSHEY_SIMPLEX
 fontScale              = 0.5
@@ -76,20 +76,22 @@ fontColor              = (255,255,255)
 lineType               = 1
 for i, pts in enumerate(filtered_points):
     pt = pts[0]
-    cv.circle(template_image, (pt.x, pt.y), radius, (255, 0, 0), 2)
+    cv.circle(template_image, (pt.x, pt.y), radius, (255, 255, 255), 3)
 
-    text = str(i%30)
-    text_width, text_height = cv.getTextSize(text, font, fontScale, lineType)[0]
-    adj_x  = int(text_width/2)
-    adj_y = int(text_height/2)
-    cv.putText(template_image,text, 
-                (pt.x-adj_x, pt.y+adj_y), 
-                font, 
-                fontScale,
-                fontColor,
-                lineType)
+    # text = str(i%30)
+    # text_width, text_height = cv.getTextSize(text, font, fontScale, lineType)[0]
+    # adj_x  = int(text_width/2)
+    # adj_y = int(text_height/2)
+    # cv.putText(template_image,text, 
+    #             (pt.x-adj_x, pt.y+adj_y), 
+    #             font, 
+    #             fontScale,
+    #             fontColor,
+    #             lineType)
 
 cv.imshow("Result", template_image)
+cv.imwrite("HexPixels_blueprint.png", template_image)
+
 cv.waitKey(0)
 cv.destroyAllWindows()
 
